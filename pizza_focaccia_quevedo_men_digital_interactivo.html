@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Focaccia Quevedo - Menú Digital Interactivo</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#0d0d0d',
+                        brandCard: '#171717',
+                        brandRed: '#E53935',
+                        brandRedHover: '#C62828',
+                        brandGreen: '#2E7D32',
+                        brandGreenLight: '#4CAF50',
+                        brandAccent: '#FFB300'
+                    },
+                    fontFamily: {
+                        sans: ['Poppins', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0d0d0d;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #2E7D32;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #E53935;
+        }
+        .bg-pattern {
+            background-color: #0d0d0d;
+            background-image: radial-gradient(#262626 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    </style>
+</head>
+<body class="bg-pattern text-white font-sans min-h-screen flex flex-col justify-between selection:bg-brandRed selection:text-white pb-24 md:pb-0">
+
+    <!-- Header / Nav -->
+    <header class="sticky top-0 z-40 bg-brandDark/95 backdrop-blur-md border-b border-zinc-800 shadow-xl">
+        <div class="h-1.5 w-full flex">
+            <div class="h-full w-1/3 bg-brandGreenLight"></div>
+            <div class="h-full w-1/3 bg-white"></div>
+            <div class="h-full w-1/3 bg-brandRed"></div>
+        </div>
+        
+        <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center space-x-3 text-center sm:text-left">
+                <div class="relative">
+                    <div class="w-14 h-14 rounded-full bg-black border-2 border-brandGreen flex items-center justify-center p-1 shadow-lg shadow-brandGreen/20">
+                        <i class="fa-solid font-bold text-brandRed text-2xl">🍕</i>
+                    </div>
+                    <span class="absolute -bottom-1 -right-1 bg-brandRed text-white text-[9px] font-extrabold px-1.5 py-0.5 rounded-full border border-black uppercase tracking-wider">Quevedo</span>
+                </div>
+                <div>
+                    <h1 class="text-2xl font-extrabold tracking-tight text-white flex items-center gap-2">
+                        PIZZA FOCACCIA
+                    </h1>
+                    <p class="text-xs text-brandGreenLight font-semibold tracking-wide italic">"Comparte más sabor, por menos"</p>
+                </div>
+            </div>
+
+            <button onclick="toggleCartModal()" class="hidden sm:flex items-center gap-3 bg-brandGreen hover:bg-brandGreenLight transition-all px-5 py-2.5 rounded-full font-bold text-white shadow-lg shadow-brandGreen/30 hover:scale-105 active:scale-95">
+                <i class="fa-solid fa-cart-shopping text-lg"></i>
+                <span>Mi Pedido</span>
+                <span id="cartBadge" class="bg-brandRed text-white text-xs font-black rounded-full px-2 py-0.5 min-w-[20px] text-center border border-white/20">0</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Banner Promocional -->
+    <section class="max-w-6xl mx-auto px-4 mt-6">
+        <div class="bg-gradient-to-r from-brandRed via-red-900 to-black rounded-2xl p-6 md:p-8 shadow-2xl relative overflow-hidden border border-brandRed/40 flex flex-col md:flex-row items-center justify-between gap-6">
+            <div class="z-10 text-center md:text-left max-w-xl">
+                <span class="bg-brandGreen text-white text-xs font-black px-3 py-1 rounded-full uppercase tracking-wider shadow-md mb-3 inline-block">
+                    <i class="fa-solid fa-calendar-check mr-1"></i> TODOS LOS COMBOS DISPONIBLES TODOS LOS DÍAS
+                </span>
+                <h2 class="text-2xl md:text-4xl font-extrabold text-white mb-2 leading-tight">
+                    ¡Pizzas Artesanales & Combos Increíbles!
+                </h2>
+                <p class="text-zinc-300 text-sm md:text-base">
+                    Disfruta del auténtico sabor en Quevedo todos los días de la semana. Haz tu pedido fácil e interactivo en línea.
+                </p>
+            </div>
+            <div class="z-10 flex flex-col items-center justify-center bg-black/60 backdrop-blur-md p-4 rounded-xl border border-zinc-700 min-w-[200px]">
+                <span class="text-xs text-zinc-400 font-semibold uppercase">Pide directo por</span>
+                <a href="https://wa.me/593983414985" target="_blank" class="text-xl font-bold text-brandGreenLight flex items-center gap-2 my-1 hover:underline">
+                    <i class="fa-brands fa-whatsapp text-2xl"></i> 098 341 4985
+                </a>
+                <span class="text-[11px] text-zinc-400">Envíos a todo Quevedo 🛵</span>
+            </div>
+            <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-brandRed/20 rounded-full blur-3xl pointer-events-none"></div>
+        </div>
+    </section>
+
+    <!-- Filtros de Categorías -->
+    <section class="max-w-6xl mx-auto px-4 mt-8">
+        <div class="flex items-center gap-2 overflow-x-auto pb-3 scrollbar-none" id="categoriesContainer">
+        </div>
+    </section>
+
+    <!-- Contenido del Menú -->
+    <main class="max-w-6xl mx-auto px-4 my-6 flex-grow">
+        <div class="flex items-center justify-between mb-6 border-b border-zinc-800 pb-3">
+            <h3 id="categoryTitle" class="text-xl md:text-2xl font-bold text-white flex items-center gap-2">
+                <span class="w-3 h-3 rounded-full bg-brandRed inline-block"></span>
+                Todo el Menú
+            </h3>
+            <span id="itemCount" class="text-xs text-zinc-400 font-medium">0 Productos</span>
+        </div>
+
+        <div id="productsGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        </div>
+    </main>
+
+    <!-- Footer Información y Contacto -->
+    <footer class="bg-black border-t border-zinc-800 pt-10 pb-20 md:pb-10 text-zinc-400 text-sm">
+        <div class="max-w-6xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div>
+                <h4 class="text-lg font-extrabold text-white mb-3 flex items-center gap-2">
+                    <span class="text-brandRed">PIZZA</span> FOCACCIA QUEVEDO
+                </h4>
+                <p class="text-xs text-zinc-400 mb-4 leading-relaxed">
+                    Las mejores pizzas con ingredientes de calidad, preparadas al momento para compartir con la familia y amigos. ¡Todos los combos disponibles todos los días!
+                </p>
+                <div class="flex items-center gap-3">
+                    <span class="inline-flex items-center justify-center w-8 h-8 bg-zinc-900 rounded-full text-brandGreenLight"><i class="fa-solid fa-clock"></i></span>
+                    <span class="text-xs">Atención todos los días: 15:00 PM - 23:00 PM</span>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-extrabold text-white mb-3 border-l-4 border-brandRed pl-2">Ubicación</h4>
+                <div class="flex items-start gap-3">
+                    <i class="fa-solid fa-location-dot text-brandRed mt-1 text-base"></i>
+                    <p class="text-xs text-zinc-300 leading-relaxed">
+                        Av. Walter Andrade y Calle 4ta de la Parroquia 7 de Octubre, frente a la Gasolinera Terpel. <br>
+                        <span class="text-brandGreenLight font-semibold">Quevedo - Ecuador</span>
+                    </p>
+                </div>
+            </div>
+
+            <div>
+                <h4 class="text-lg font-extrabold text-white mb-3 border-l-4 border-brandGreen pl-2">Contacto & Redes</h4>
+                <div class="space-y-3">
+                    <a href="https://wa.me/593983414985" target="_blank" class="flex items-center gap-3 text-xs text-zinc-300 hover:text-brandGreenLight transition-colors">
+                        <i class="fa-brands fa-whatsapp text-lg text-brandGreenLight"></i>
+                        <span>WhatsApp: +593 98 341 4985</span>
+                    </a>
+                    <div class="flex items-center gap-4 pt-2">
+                        <a href="https://instagram.com" target="_blank" class="w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-300 hover:text-brandRed hover:border-brandRed transition-all">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                        <a href="https://facebook.com" target="_blank" class="w-9 h-9 rounded-full bg-zinc-900 border border-zinc-800 flex items-center justify-center text-zinc-300 hover:text-brandRed hover:border-brandRed transition-all">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <span class="text-xs text-zinc-500 font-mono">@pizza.focacciaquevedo</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="max-w-6xl mx-auto px-4 mt-8 pt-6 border-t border-zinc-900 text-center text-xs text-zinc-600">
+            &copy; <span id="year"></span> Pizza Focaccia Quevedo. Todos los derechos reservados.
+        </div>
+    </footer>
+
+    <!-- Barra Carrito Flotante Móvil -->
+    <div class="fixed bottom-0 left-0 right-0 bg-brandDark/95 border-t border-zinc-800 p-3 sm:hidden z-40 backdrop-blur-md">
+        <button onclick="toggleCartModal()" class="w-full bg-brandGreen hover:bg-brandGreenLight active:scale-98 transition-all py-3 px-4 rounded-xl font-bold text-white flex items-center justify-between shadow-lg shadow-brandGreen/30">
+            <div class="flex items-center gap-3">
+                <div class="relative">
+                    <i class="fa-solid fa-cart-shopping text-xl"></i>
+                    <span id="mobileCartBadge" class="absolute -top-2 -right-2 bg-brandRed text-white text-[10px] font-black rounded-full w-4 h-4 flex items-center justify-center">0</span>
+                </div>
+                <span>Ver Mi Pedido</span>
+            </div>
+            <span id="mobileCartTotal" class="text-lg font-extrabold">$0.00</span>
+        </button>
+    </div>
+
+    <!-- Modal Carrito de Compras -->
+    <div id="cartModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-brandCard border border-zinc-800 rounded-2xl w-full max-w-lg max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+            <div class="p-4 border-b border-zinc-800 flex items-center justify-between bg-black/40">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-bag-shopping text-brandRed text-xl"></i>
+                    <h3 class="font-extrabold text-lg text-white">Tu Pedido</h3>
+                </div>
+                <button onclick="toggleCartModal()" class="w-8 h-8 rounded-full bg-zinc-800 text-zinc-400 hover:text-white flex items-center justify-center transition-colors">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+
+            <div id="cartItemsContainer" class="p-4 overflow-y-auto flex-grow space-y-4">
+            </div>
+
+            <div class="p-4 border-t border-zinc-800 bg-black/60 space-y-3">
+                <div class="space-y-2">
+                    <label class="block text-xs font-semibold text-zinc-400">Observaciones o Dirección de Entrega (Opcional):</label>
+                    <input type="text" id="orderNotes" placeholder="Ej: Sin cebolla / Av. Walter Andrade frente a..." class="w-full bg-zinc-900 border border-zinc-800 rounded-lg px-3 py-2 text-xs text-white focus:outline-none focus:border-brandGreen transition-colors">
+                </div>
+
+                <div class="flex items-center justify-between pt-2 border-t border-zinc-800/80">
+                    <span class="text-sm font-semibold text-zinc-300">Total a Pagar:</span>
+                    <span id="cartTotal" class="text-2xl font-black text-brandGreenLight">$0.00</span>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3 pt-1">
+                    <button onclick="clearCart()" class="py-2.5 px-4 rounded-xl border border-zinc-700 text-zinc-400 hover:text-white hover:bg-zinc-800 text-xs font-bold transition-all">
+                        Vaciar
+                    </button>
+                    <button onclick="sendWhatsAppOrder()" class="py-2.5 px-4 rounded-xl bg-brandGreen hover:bg-brandGreenLight text-white text-xs font-extrabold transition-all flex items-center justify-center gap-2 shadow-lg shadow-brandGreen/30">
+                        <i class="fa-brands fa-whatsapp text-base"></i> Pedir por WhatsApp
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Seleccionar Sabores / Opciones -->
+    <div id="customizerModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-brandCard border border-zinc-800 rounded-2xl w-full max-w-md p-5 shadow-2xl space-y-4">
+            <div class="flex items-center justify-between border-b border-zinc-800 pb-3">
+                <h4 id="customizerTitle" class="font-bold text-white text-base">Personalizar Opción</h4>
+                <button onclick="closeCustomizer()" class="text-zinc-400 hover:text-white">
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+            </div>
+            
+            <p id="customizerDesc" class="text-xs text-zinc-400"></p>
+
+            <div id="customizerOptions" class="space-y-3 max-h-[50vh] overflow-y-auto pr-1">
+            </div>
+
+            <div class="pt-3 border-t border-zinc-800 flex items-center justify-between">
+                <div>
+                    <span class="text-xs text-zinc-400 block">Precio:</span>
+                    <span id="customizerPrice" class="text-lg font-black text-brandRed">$0.00</span>
+                </div>
+                <button id="addCustomizedBtn" class="bg-brandRed hover:bg-brandRedHover text-white px-5 py-2.5 rounded-xl font-bold text-xs shadow-lg transition-all">
+                    Agregar al Pedido
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast de Notificación -->
+    <div id="toast" class="fixed top-20 right-4 bg-brandGreen text-white px-4 py-3 rounded-xl shadow-2xl flex items-center gap-3 z-50 transform translate-x-full transition-transform duration-300 border border-white/20">
+        <i class="fa-solid fa-circle-check text-lg"></i>
+        <span id="toastMsg" class="text-xs font-bold">¡Producto agregado al carrito!</span>
+    </div>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // EDITAR AQUÍ: Modifica el campo 'image' de cada producto con el nombre o URL de tu foto.
+        const menuData = [
+            {
+                id: 'c1',
+                name: 'Super Combo Mix',
+                category: 'combos',
+                price: 11.99,
+                description: '2 Pizzas Pequeñas (cualquier sabor) + 1 Lasaña.',
+                badge: 'Todos los Días',
+                requiresFlavors: true,
+                flavorCount: 2,
+                image: 'imagenes/super-combo-mix.jpg' // Reemplaza con el nombre de tu foto o enlace
+            },
+            {
+                id: 'c2',
+                name: 'Combo Mediana',
+                category: 'combos',
+                price: 11.99,
+                description: 'Pizza Mediana + Pizza Pequeña + Pan de Ajo + Cola de 1LT.',
+                badge: 'Todos los Días',
+                requiresFlavors: true,
+                flavorCount: 2,
+                image: 'imagenes/combo-mediana.jpg'
+            },
+            {
+                id: 'c3',
+                name: 'Combo Doble',
+                category: 'combos',
+                price: 7.99,
+                description: '2 Pizzas Pequeñas a un súper precio.',
+                badge: 'Todos los Días',
+                requiresFlavors: true,
+                flavorCount: 2,
+                image: 'imagenes/combo-doble.jpg'
+            },
+            {
+                id: 'c4',
+                name: 'Combo 4 Pizzas Pequeñas',
+                category: 'combos',
+                price: 11.99,
+                description: '2 Pizzas Hawaianas + 2 Pizzas (Cualquier Sabor).',
+                badge: 'Todos los Días',
+                requiresFlavors: true,
+                fixedFlavors: ['Hawaiana', 'Hawaiana'],
+                flavorCount: 2,
+                image: 'imagenes/combo-4-pizzas.jpg'
+            },
+            {
+                id: 'c5',
+                name: 'Combo Familiar',
+                category: 'combos',
+                price: 17.99,
+                description: 'Pizza Familiar + Pizza Pequeña + Pan de Ajo + Cola de 1LT.',
+                badge: 'Todos los Días',
+                requiresFlavors: true,
+                flavorCount: 2,
+                image: 'imagenes/combo-familiar.jpg'
+            },
+            {
+                id: 'c6',
+                name: 'Combo Lasaña',
+                category: 'combos',
+                price: 8.99,
+                description: '2 Lasañas + Cola de 1 Litro.',
+                badge: 'Todos los Días',
+                requiresFlavors: false,
+                image: 'imagenes/combo-lasana.jpg'
+            },
+            {
+                id: 'p1',
+                name: 'Combo 2 Medianas + Cola 1L',
+                category: 'combos',
+                price: 13.99,
+                description: '2 Pizzas Medianas de cualquier sabor + Cola de 1 Litro.',
+                badge: 'Todos los Días',
+                requiresFlavors: true,
+                flavorCount: 2,
+                image: 'imagenes/combo-2-medianas.jpg'
+            },
+            {
+                id: 'p2',
+                name: 'Combo 2 Familiares + Cola 1L',
+                category: 'combos',
+                price: 22.99,
+                description: '2 Pizzas Familiares de cualquier sabor + Cola de 1 Litro.',
+                badge: 'Todos los Días',
+                requiresFlavors: true,
+                flavorCount: 2,
+                image: 'imagenes/combo-2-familiares.jpg'
+            },
+            {
+                id: 'a1',
+                name: 'Pizza Personal',
+                category: 'adicionales',
+                price: 4.50,
+                description: 'Pizza individual recién horneada en tu sabor preferido.',
+                badge: 'Individual',
+                requiresFlavors: true,
+                flavorCount: 1,
+                image: 'imagenes/pizza-personal.jpg'
+            },
+            {
+                id: 'a2',
+                name: 'Pizza Mediana',
+                category: 'adicionales',
+                price: 9.00,
+                description: 'Pizza mediana para compartir con sabor a tu elección.',
+                badge: 'Popular',
+                requiresFlavors: true,
+                flavorCount: 1,
+                image: 'imagenes/pizza-mediana.jpg'
+            },
+            {
+                id: 'a3',
+                name: 'Pizza Familiar',
+                category: 'adicionales',
+                price: 15.00,
+                description: 'Gran pizza familiar para toda la casa.',
+                badge: 'Familiar',
+                requiresFlavors: true,
+                flavorCount: 1,
+                image: 'imagenes/pizza-familiar.jpg'
+            },
+            {
+                id: 'a4',
+                name: 'Porción de Pan de Ajo',
+                category: 'adicionales',
+                price: 1.00,
+                description: 'Porción de pan con ajo de la casa recién tostado.',
+                badge: 'Acompañante',
+                requiresFlavors: false,
+                image: 'imagenes/pan-de-ajo.jpg'
+            },
+            {
+                id: 'a5',
+                name: 'Inca Kola 1 Litro',
+                category: 'adicionales',
+                price: 1.00,
+                description: 'Gaseosa Inca Kola helada de 1 Litro para acompañar tu menú.',
+                badge: 'Bebida',
+                requiresFlavors: false,
+                image: 'imagenes/inca-kola.jpg'
+            }
+        ];
+
+        const availableFlavors = [
+            'Hawaiana (Jamón y Piña)',
+            'Pepperoni Clásica',
+            'Salami & Queso',
+            'Jamón & Queso',
+            'Pollo & Champiñones',
+            'Carnes Mixtas',
+            'Vegetariana Especial',
+            'Queso Mozzarella Tradicional'
+        ];
+
+        const categories = [
+            { id: 'all', name: 'Todo el Menú', icon: 'fa-border-all' },
+            { id: 'combos', name: 'Todos los Combos', icon: 'fa-box-open' },
+            { id: 'adicionales', name: 'Pizzas & Adicionales', icon: 'fa-utensils' }
+        ];
+
+        let cart = [];
+        let currentFilter = 'all';
+        let currentCustomItem = null;
+
+        window.onload = function() {
+            document.getElementById('year').textContent = new Date().getFullYear();
+            renderCategories();
+            renderProducts();
+            updateCartUI();
+        };
+
+        function renderCategories() {
+            const container = document.getElementById('categoriesContainer');
+            container.innerHTML = categories.map(cat => `
+                <button onclick="filterCategory('${cat.id}')" 
+                        class="px-4 py-2 rounded-xl text-xs font-bold transition-all whitespace-nowrap flex items-center gap-2 border ${
+                            currentFilter === cat.id 
+                            ? 'bg-brandRed border-brandRed text-white shadow-lg shadow-brandRed/30' 
+                            : 'bg-brandCard border-zinc-800 text-zinc-400 hover:border-zinc-600 hover:text-white'
+                        }">
+                    <i class="fa-solid ${cat.icon}"></i>
+                    ${cat.name}
+                </button>
+            `).join('');
+        }
+
+        function filterCategory(catId) {
+            currentFilter = catId;
+            renderCategories();
+            renderProducts();
+
+            const titleElem = document.getElementById('categoryTitle');
+            const catObj = categories.find(c => c.id === catId);
+            titleElem.innerHTML = `<span class="w-3 h-3 rounded-full bg-brandRed inline-block"></span> ${catObj ? catObj.name : 'Productos'}`;
+        }
+
+        function renderProducts() {
+            const grid = document.getElementById('productsGrid');
+            const filtered = currentFilter === 'all' 
+                ? menuData 
+                : menuData.filter(item => item.category === currentFilter);
+
+            document.getElementById('itemCount').textContent = `${filtered.length} Opciones`;
+
+            if(filtered.length === 0) {
+                grid.innerHTML = `<p class="col-span-full text-center text-zinc-500 py-10">No hay opciones disponibles en esta categoría.</p>`;
+                return;
+            }
+
+            grid.innerHTML = filtered.map(item => `
+                <div class="bg-brandCard border border-zinc-800 hover:border-zinc-700 rounded-2xl overflow-hidden shadow-xl flex flex-col justify-between group transition-all duration-300">
+                    <div>
+                        <div class="relative overflow-hidden h-48 bg-zinc-900">
+                            <img src="${item.image}" alt="${item.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 opacity-90 group-hover:opacity-100" onerror="this.src='https://placehold.co/400x260/1a1a1a/ffffff?text=Pizza+Focaccia'">
+                            <span class="absolute top-3 left-3 bg-brandRed text-white text-[10px] font-black px-2.5 py-1 rounded-md uppercase tracking-wider shadow-md">
+                                ${item.badge}
+                            </span>
+                        </div>
+
+                        <div class="p-4 space-y-2">
+                            <div class="flex items-start justify-between gap-2">
+                                <h4 class="font-extrabold text-white text-base leading-snug group-hover:text-brandGreenLight transition-colors">${item.name}</h4>
+                            </div>
+                            <p class="text-xs text-zinc-400 line-clamp-2 leading-relaxed">${item.description}</p>
+                        </div>
+                    </div>
+
+                    <div class="p-4 pt-0 flex items-center justify-between border-t border-zinc-800/60 mt-3">
+                        <div>
+                            <span class="text-[10px] text-zinc-500 uppercase font-semibold block">Precio</span>
+                            <span class="text-xl font-black text-white">$${item.price.toFixed(2)}</span>
+                        </div>
+                        <button onclick="handleAddToCart('${item.id}')" class="bg-brandGreen hover:bg-brandGreenLight active:scale-95 text-white font-bold px-4 py-2 rounded-xl text-xs flex items-center gap-2 transition-all shadow-md shadow-brandGreen/20">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Pedir</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function handleAddToCart(productId) {
+            const item = menuData.find(p => p.id === productId);
+            if (!item) return;
+
+            if (item.requiresFlavors) {
+                openCustomizer(item);
+            } else {
+                addToCart({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    flavors: []
+                });
+            }
+        }
+
+        function openCustomizer(item) {
+            currentCustomItem = item;
+            document.getElementById('customizerTitle').textContent = `Sabores: ${item.name}`;
+            document.getElementById('customizerDesc').textContent = item.fixedFlavors 
+                ? `Incluye 2 Hawaianas. Elige los ${item.flavorCount} sabores restantes:` 
+                : `Selecciona sabor(es) para tu pedido:`;
+            document.getElementById('customizerPrice').textContent = `$${item.price.toFixed(2)}`;
+
+            const container = document.getElementById('customizerOptions');
+            let selectorsHTML = '';
+
+            for (let i = 1; i <= item.flavorCount; i++) {
+                selectorsHTML += `
+                    <div>
+                        <label class="block text-xs font-semibold text-zinc-300 mb-1">Sabor Pizza #${i}:</label>
+                        <select id="flavorSelect_${i}" class="w-full bg-zinc-900 border border-zinc-700 rounded-lg p-2.5 text-xs text-white focus:border-brandGreen focus:outline-none">
+                            ${availableFlavors.map(f => `<option value="${f}">${f}</option>`).join('')}
+                        </select>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = selectorsHTML;
+            document.getElementById('customizerModal').classList.remove('hidden');
+
+            document.getElementById('addCustomizedBtn').onclick = function() {
+                let selectedFlavors = [];
+                if(item.fixedFlavors) {
+                    selectedFlavors = [...item.fixedFlavors];
+                }
+                for (let i = 1; i <= item.flavorCount; i++) {
+                    const sel = document.getElementById(`flavorSelect_${i}`);
+                    if(sel) selectedFlavors.push(sel.value);
+                }
+
+                addToCart({
+                    id: item.id,
+                    name: item.name,
+                    price: item.price,
+                    flavors: selectedFlavors
+                });
+
+                closeCustomizer();
+            };
+        }
+
+        function closeCustomizer() {
+            document.getElementById('customizerModal').classList.add('hidden');
+            currentCustomItem = null;
+        }
+
+        function addToCart(product) {
+            const index = cart.findIndex(i => i.id === product.id && JSON.stringify(i.flavors) === JSON.stringify(product.flavors));
+            
+            if (index > -1) {
+                cart[index].quantity += 1;
+            } else {
+                cart.push({
+                    ...product,
+                    quantity: 1,
+                    cartItemId: Date.now()
+                });
+            }
+
+            updateCartUI();
+            showToast(`¡${product.name} agregado al carrito!`);
+        }
+
+        function updateQuantity(cartItemId, change) {
+            const index = cart.findIndex(i => i.cartItemId === cartItemId);
+            if (index > -1) {
+                cart[index].quantity += change;
+                if (cart[index].quantity <= 0) {
+                    cart.splice(index, 1);
+                }
+            }
+            updateCartUI();
+        }
+
+        function clearCart() {
+            cart = [];
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            const totalPrice = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+
+            document.getElementById('cartBadge').textContent = totalCount;
+            document.getElementById('mobileCartBadge').textContent = totalCount;
+            document.getElementById('mobileCartTotal').textContent = `$${totalPrice.toFixed(2)}`;
+            document.getElementById('cartTotal').textContent = `$${totalPrice.toFixed(2)}`;
+
+            const container = document.getElementById('cartItemsContainer');
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center py-8 text-zinc-500">
+                        <i class="fa-solid fa-basket-shopping text-4xl mb-2 opacity-40"></i>
+                        <p class="text-xs">Tu pedido está vacío.</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = cart.map(item => `
+                    <div class="bg-zinc-900/90 border border-zinc-800 rounded-xl p-3 flex items-center justify-between gap-3">
+                        <div class="flex-grow">
+                            <h5 class="text-xs font-bold text-white">${item.name}</h5>
+                            ${item.flavors && item.flavors.length > 0 ? `
+                                <p class="text-[10px] text-brandGreenLight mt-0.5">
+                                    <i class="fa-solid fa-pizza-slice text-[8px] mr-1"></i>${item.flavors.join(', ')}
+                                </p>
+                            ` : ''}
+                            <span class="text-xs font-black text-brandRed mt-1 block">$${(item.price * item.quantity).toFixed(2)}</span>
+                        </div>
+                        <div class="flex items-center gap-2 bg-black border border-zinc-800 rounded-lg p-1">
+                            <button onclick="updateQuantity(${item.cartItemId}, -1)" class="w-6 h-6 rounded bg-zinc-800 text-white text-xs font-bold hover:bg-brandRed flex items-center justify-center transition-colors">-</button>
+                            <span class="text-xs font-extrabold text-white px-1">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.cartItemId}, 1)" class="w-6 h-6 rounded bg-zinc-800 text-white text-xs font-bold hover:bg-brandGreen flex items-center justify-center transition-colors">+</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        function toggleCartModal() {
+            const modal = document.getElementById('cartModal');
+            modal.classList.toggle('hidden');
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = message;
+            toast.classList.remove('translate-x-full');
+            setTimeout(() => {
+                toast.classList.add('translate-x-full');
+            }, 2500);
+        }
+
+        function sendWhatsAppOrder() {
+            if (cart.length === 0) {
+                alert('Añada al menos un producto al carrito para realizar el pedido.');
+                return;
+            }
+
+            const phone = "593983414985";
+            const notes = document.getElementById('orderNotes').value.trim();
+            const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
+
+            let msg = `Hola *Pizza Focaccia Quevedo*, deseo realizar el siguiente pedido:\n\n`;
+
+            cart.forEach((item, index) => {
+                msg += `*${index + 1}. ${item.name}* (x${item.quantity})\n`;
+                if (item.flavors && item.flavors.length > 0) {
+                    msg += `   🍕 Sabores: ${item.flavors.join(', ')}\n`;
+                }
+                msg += `   Subtotal: $${(item.price * item.quantity).toFixed(2)}\n\n`;
+            });
+
+            msg += `-----------------------------\n`;
+            msg += `*TOTAL A PAGAR: $${total}*\n`;
+
+            if (notes) {
+                msg += `\n📝 *Notas/Dirección:* ${notes}\n`;
+            }
+
+            msg += `\n¡Quedo atento a la confirmación de mi pedido! 🍕`;
+
+            const encodedMsg = encodeURIComponent(msg);
+            const whatsappUrl = `https://wa.me/${phone}?text=${encodedMsg}`;
+
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
